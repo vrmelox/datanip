@@ -28,16 +28,14 @@ Cette analyse porte sur 1 million d'incidents criminels enregistrés à Los Ange
 
 ## 📋 TABLE DES MATIÈRES
 1. [Contexte et Objectifs](#contexte)
-2. [Méthodologie](#methodologie)
-3. [Préparation des Données](#preparation)
-4. [Analyse Exploratoire](#analyse)
-5. [Insights Détaillés](#insights)
-6. [Recommandations](#recommandations)
-7. [Annexes Techniques](#annexes)
+2. [Analyse Exploratoire](#analyse)
+3. [Insights Détaillés](#insights)
+4. [Recommandations](#recommandations)
+5. [Annexes Techniques](#annexes)
 
 ---
 
-## 1️⃣ CONTEXTE ET OBJECTIFS {#contexte}
+## 1 CONTEXTE ET OBJECTIFS {#contexte}
 
 ### Objectif principal
 Analyser la criminalité à Los Angeles pour fournir aux décideurs des insights exploitables basés sur des données probantes, permettant d'optimiser l'allocation des ressources policières et les politiques de prévention.
@@ -57,82 +55,9 @@ Analyser la criminalité à Los Angeles pour fournir aux décideurs des insights
 
 ---
 
-## 2️⃣ MÉTHODOLOGIE {#methodologie}
+## 2 ANALYSE EXPLORATOIRE {#analyse}
 
-### Approche générale
-1. **Collecte et consolidation** : Import du dataset brut
-2. **Audit qualité** : Analyse des données manquantes et aberrantes
-3. **Nettoyage intelligent** : Traitement différencié selon la nature des manquements
-4. **Enrichissement** : Création de variables dérivées (tranches d'âge, périodes)
-5. **Exploration multi-axes** : Analyses temporelle, spatiale, démographique
-6. **Synthèse** : Extraction d'insights et formulation de recommandations
-
-### Outils utilisés
-- **Python 3.x** (Pandas, NumPy, Matplotlib, Seaborn)
-- **Jupyter Notebook** (documentation et reproductibilité)
-- **Missingno** (visualisation des données manquantes)
-
----
-
-## 3️⃣ PRÉPARATION DES DONNÉES {#preparation}
-
-### 3.1 Audit initial
-
-**Dimensions du dataset**
-- 1 000 000 lignes (incidents)
-- 28 colonnes (variables)
-
-**Qualité globale**
-- Données dupliquées : ✅ Vérifiées (aucune duplication)
-- Données manquantes : ⚠️ Présentes dans 12 colonnes
-- Format des dates : 🔧 Nécessite normalisation
-
-### 3.2 Traitement des données manquantes
-
-#### Approche méthodologique
-Nous avons classifié chaque variable selon le mécanisme de disparition (MCAR, MAR, MNAR) pour appliquer le traitement le plus approprié.
-
-| Variable | % Manquant | Type | Traitement | Justification |
-|----------|-----------|------|------------|---------------|
-| Crime Code 2/3/4 | >93% | MNAR | **Suppression** | Crimes secondaires peu pertinents |
-| Cross Street | Variable | MNAR | **"PRECISE ADDRESS"** | Absence = adresse précise disponible |
-| Mocodes | 15.09% | MNAR | **"NO RECORD"** | Absence = pas d'antécédents |
-| Weapon Used Cd/Desc | 67.44% | MNAR | **"NO WEAPON"** | Absence = pas d'arme utilisée |
-| Vict Descent/Sex | ~14% | MAR | **"NO VICTIM"** ou **"X"** | Corrélés (pas de victime humaine) |
-| Premis Cd/Desc | Variable | MAR | **0 / "NO DESCRIPTION"** | Lieu non identifiable |
-| Crm Cd 1 | Faible | Simple | **Copie Crm Cd** | Redondance des codes |
-| Status | Minimal | Simple | **"IC"** | Valeur par défaut système |
-
-#### Résultat
-✅ **100% des données manquantes traitées sans perte d'information pertinente**
-
-### 3.3 Normalisation des formats
-
-**Dates**
-- **Avant** : MM/JJ/AAAA HH:MM:SS (format mixte)
-- **Après** : JJ/MM/AAAA (format standard FR, heures séparées)
-
-**Heures**
-- **Problème détecté** : Valeurs >2400 (minutes au-delà de minuit)
-- **Solution** : Conversion en minutes depuis minuit, puis en heures standard
-- **Format final** : 0-23 (24h)
-
-### 3.4 Création de variables dérivées
-
-| Nouvelle variable | Description | Usage |
-|-------------------|-------------|-------|
-| Year | Année extraite | Analyse tendances annuelles |
-| Month | Mois extrait | Saisonnalité |
-| Day of Week | Jour de la semaine | Patterns hebdomadaires |
-| Is Weekend | Booléen weekend | Comparaison semaine/weekend |
-| Is Night | Booléen nuit (22h-04h) | Criminalité nocturne |
-| Age Bracket | Tranches d'âge (0-17, 18-25, etc.) | Profils victimes |
-
----
-
-## 4️⃣ ANALYSE EXPLORATOIRE {#analyse}
-
-### 4.1 Évolution temporelle globale
+### 2.1 Évolution temporelle globale
 
 #### Tendance annuelle (2020-2025)
 
@@ -162,7 +87,7 @@ La courbe suit un pattern post-crise typique : reprise d'activité criminelle ap
 - **Janvier** : Post-fêtes, vulnérabilité accrue, augmentation des déplacements
 - **Variations annuelles** : Influences météo, événements locaux, changements de politiques
 
-### 4.2 Patterns quotidiens et hebdomadaires
+### 2.2 Patterns quotidiens et hebdomadaires
 
 #### Distribution horaire (24h)
 
@@ -202,9 +127,9 @@ La criminalité suit l'activité économique : plus de population en déplacemen
 
 ---
 
-## 5️⃣ INSIGHTS DÉTAILLÉS {#insights}
+## 3 INSIGHTS DÉTAILLÉS {#insights}
 
-### 5.1 Profils des victimes
+### 3.1 Profils des victimes
 
 #### Distribution par sexe
 
@@ -248,7 +173,7 @@ La courbe suit une distribution normale décalée vers la gauche : pic dans la v
 **Contexte démographique**  
 Cette distribution reflète partiellement la composition démographique de LA (forte population hispanique). Cependant, une analyse per capita serait nécessaire pour identifier une sur-représentation réelle.
 
-### 5.2 Analyse géographique
+### 3.2 Analyse géographique
 
 #### Zones à haut risque
 
@@ -266,7 +191,7 @@ Cette distribution reflète partiellement la composition démographique de LA (f
 **Analyse spatiale**  
 Central concentre probablement le centre-ville avec forte densité commerciale, population flottante élevée, et concentration d'opportunités criminelles. Foothill, zone périphérique résidentielle, bénéficie d'une cohésion sociale plus forte.
 
-### 5.3 Typologie criminelle
+### 3.3 Typologie criminelle
 
 #### Top 5 des crimes
 
@@ -305,7 +230,7 @@ Tranche d'âge 26-44 ans majoritairement touchée (propriétaires de véhicules 
 **Interprétation**  
 Les violences légères suivent l'activité sociale : interactions accrues = risque de conflits accru. Le pic à 15h suggère des altercations en milieu de journée (commerces, transports).
 
-### 5.4 Moyens utilisés
+### 3.4 Moyens utilisés
 
 **Arme la plus utilisée** : **AUCUNE (violence physique)**
 
@@ -320,9 +245,9 @@ La criminalité à LA est majoritairement non-armée. Les crimes violents avec a
 
 ---
 
-## 6️⃣ RECOMMANDATIONS STRATÉGIQUES {#recommandations}
+## 4 RECOMMANDATIONS STRATÉGIQUES {#recommandations}
 
-### 6.1 Allocation des ressources policières
+### 4.1 Allocation des ressources policières
 
 #### Priorisation temporelle
 
@@ -347,7 +272,7 @@ N. **Foothill** : Maintien présence minimale
 - Quadrillage renforcé dans Central (patrouilles + caméras + éclairage)
 - Unités mobiles inter-zones pour flexibilité
 
-### 6.2 Prévention ciblée
+### 4.2 Prévention ciblée
 
 #### Programme anti-vol de véhicules
 
@@ -366,7 +291,7 @@ N. **Foothill** : Maintien présence minimale
 2. **Formation** : Sensibilisation commerçants/transport à la désescalade
 3. **Environnement** : Aménagements urbains anti-conflit (signalétique, espaces)
 
-### 6.3 Politiques sociales
+### 4.3 Politiques sociales
 
 #### Protection des populations vulnérables
 
@@ -383,7 +308,7 @@ N. **Foothill** : Maintien présence minimale
 1. **Prévention comportementale** : Campagnes sur les risques
 2. **Programmes de mentorat** : Jeunes à risque
 
-### 6.4 Suivi et évaluation
+### 4.4 Suivi et évaluation
 
 **Indicateurs clés de performance (KPI)**
 
@@ -398,44 +323,9 @@ N. **Foothill** : Maintien présence minimale
 
 ---
 
-## 7️⃣ ANNEXES TECHNIQUES {#annexes}
+## 5 ANNEXES TECHNIQUES {#annexes}
 
-### A. Dictionnaire des variables
-
-| Variable | Type | Description | Valeurs | Source |
-|----------|------|-------------|---------|--------|
-| DR_NO | Int | Numéro de rapport unique | Unique | LAPD |
-| Date Rptd | Date | Date de signalement | JJ/MM/AAAA | LAPD |
-| Date Occ | Date | Date d'occurrence | JJ/MM/AAAA | LAPD |
-| Time Occ | Int | Heure d'occurrence | 0-2359 | LAPD |
-| Area | Int | Code zone police | 1-21 | LAPD |
-| Area Name | String | Nom zone police | Central, etc. | LAPD |
-| Crm Cd | Int | Code crime | 110-956 | LAPD |
-| Crm Cd Desc | String | Description crime | Vol, etc. | LAPD |
-| Vict Age | Int | Âge victime | 0-120 | LAPD |
-| Vict Sex | Char | Sexe victime | M/F/X | LAPD |
-| Vict Descent | Char | Origine victime | H/W/B/etc. | LAPD |
-| Premis Cd | Int | Code lieu | 101-972 | LAPD |
-| Premis Desc | String | Description lieu | Rue, résidence | LAPD |
-| Weapon Used Cd | Int | Code arme | 100-516 | LAPD |
-| Weapon Desc | String | Description arme | Pistolet, etc. | LAPD |
-| Status | String | Statut investigation | IC/AA/etc. | LAPD |
-| Location | String | Adresse approximative | Coordonnées | LAPD |
-| Cross Street | String | Intersection | Nom rue | LAPD |
-| LAT | Float | Latitude | Degrés | LAPD |
-| LON | Float | Longitude | Degrés | LAPD |
-
-### B. Codes crimes principaux
-
-| Code | Description | Catégorie |
-|------|-------------|-----------|
-| 510 | Vol de véhicules | Propriété |
-| 624 | Violence physique légère | Personne |
-| 330 | Cambriolage véhicule | Propriété |
-| 354 | Usurpation d'identité | Fraude |
-| 740 | Vandalisme | Propriété |
-
-### C. Limites de l'étude
+### A. Limites de l'étude
 
 **Limites méthodologiques**
 1. **Année 2025 incomplète** : Données jusqu'à octobre uniquement
@@ -448,7 +338,7 @@ N. **Foothill** : Maintien présence minimale
 2. **Généralisation** : Résultats spécifiques à Los Angeles
 3. **Évolution temporelle** : Contextes 2020 (COVID) vs 2025 différents
 
-### D. Pistes d'amélioration futures
+### B. Pistes d'amélioration futures
 
 **Enrichissement des données**
 1. Croisement avec données socio-économiques (pauvreté, chômage)
@@ -459,11 +349,6 @@ N. **Foothill** : Maintien présence minimale
 1. Modélisation prédictive (Machine Learning)
 2. Analyse de clustering géospatial (hotspots)
 3. Analyse de réseaux criminels (récidive)
-
-**Outils décisionnels**
-1. Tableau de bord Power BI temps réel
-2. API pour intégration systèmes police
-3. Alertes automatiques zones/périodes critiques
 
 ---
 
